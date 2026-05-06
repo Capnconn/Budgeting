@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="BudgetingApp.Android/BudgetingApp.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="BudgetingApp.Browser/BudgetingApp.Browser.csproj" />
+  <Project Path="BudgetingApp.Desktop/BudgetingApp.Desktop.csproj" />
+  <Project Path="BudgetingApp.iOS/BudgetingApp.iOS.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="BudgetingApp/BudgetingApp.csproj" />
+</Solution>
