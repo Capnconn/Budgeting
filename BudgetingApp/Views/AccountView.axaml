@@ -2,12 +2,162 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
              xmlns:vm="using:BudgetingApp.ViewModels"
-             x:Class="BudgetingApp.AccountView">
-    	<Design.DataContext>
-		<!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-		<vm:AccountViewModel />
-	</Design.DataContext>
+             x:Class="BudgetingApp.Views.AccountView"
+             x:DataType="vm:AccountViewModel">
+
+    <Design.DataContext>
+        <vm:AccountViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#8A8A9A"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style Selector="TextBox.field">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="#F5F5F8"/>
+            <Setter Property="BorderBrush" Value="#E2E2EA"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.primary">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#5B6AF0"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.secondary">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#D0D0DA"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <ScrollViewer Background="#FAFAFA" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="36,32" MaxWidth="520" Spacing="16">
+
+                <!-- Header -->
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Account settings"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#1A1A2E"/>
+                    <TextBlock Text="Manage your personal details and linked accounts"
+                               FontSize="13"
+                               Foreground="#8A8A9A"/>
+                </StackPanel>
+
+                <!-- Name row -->
+                <Grid ColumnDefinitions="*,12,*">
+                    <StackPanel Grid.Column="0" Spacing="5">
+                        <TextBlock Classes="label" Text="FIRST NAME"/>
+                        <TextBox Classes="field" PlaceholderText="First name" Text="{Binding FirstName}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Spacing="5">
+                        <TextBlock Classes="label" Text="LAST NAME"/>
+                        <TextBox Classes="field" PlaceholderText="Last name" Text="{Binding LastName}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Email -->
+                <StackPanel Spacing="5">
+                    <TextBlock Classes="label" Text="EMAIL"/>
+                    <TextBox Classes="field" PlaceholderText="your@email.com" Text="{Binding Email}"/>
+                </StackPanel>
+
+                <!-- Username -->
+                <StackPanel Spacing="5">
+                    <TextBlock Classes="label" Text="USERNAME"/>
+                    <TextBox Classes="field" PlaceholderText="@username" Text="{Binding Username}"/>
+                </StackPanel>
+
+                <!-- Error -->
+                <Border IsVisible="{Binding HasError}"
+                        Background="#FFF0F0"
+                        BorderBrush="#FFD0D0"
+                        BorderThickness="0.5"
+                        CornerRadius="8"
+                        Padding="14,10">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#D04040"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Actions -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Classes="primary" Content="Save changes" Command="{Binding SaveCommand}"/>
+                    <Button Classes="secondary" Content="Discard" Command="{Binding DiscardCommand}"/>
+                </StackPanel>
+
+                <!-- Divider -->
+                <Border Height="0.5" Background="#E8E8F0"/>
+
+                <!-- Linked accounts -->
+                <TextBlock Text="Linked accounts"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="#1A1A2E"/>
+
+                <ItemsControl ItemsSource="{Binding LinkedAccounts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#F5F5F8"
+                                    CornerRadius="8"
+                                    Padding="14,10"
+                                    Margin="0,0,0,8">
+                                <StackPanel Spacing="3">
+                                    <TextBlock Text="{Binding AccountName}" FontSize="13" Foreground="#1A1A2E"/>
+                                    <TextBlock Text="{Binding BankName}" FontSize="11" Foreground="#8A8A9A"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock IsVisible="{Binding HasNoLinkedAccounts}"
+                           Text="No accounts linked yet."
+                           FontSize="13"
+                           Foreground="#8A8A9A"/>
+
+                <Button Classes="secondary"
+                        Content="+ Link account"
+                        Command="{Binding LinkAccountCommand}"
+                        HorizontalAlignment="Left"/>
+
+                <Border Height="16"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Toast -->
+        <Border IsVisible="{Binding ShowSuccess}"
+                Background="#3B6D11"
+                CornerRadius="8"
+                Padding="16,10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,24">
+            <TextBlock Text="Changes saved successfully"
+                       Foreground="White"
+                       FontSize="13"
+                       VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
 </UserControl>

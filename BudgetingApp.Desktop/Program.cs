@@ -12,25 +12,13 @@ namespace BudgetingApp.Desktop
         [STAThread]
         public static void Main(string[] args)
         {
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddBudgetingAppServices();
-                })
-                .Build();
-
-            BuildAvaloniaApp(host.Services)
+            BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp(IServiceProvider services)
-            => AppBuilder.Configure<App>(() =>
-            {
-                var app = new App();
-                app.Initialize(services);
-                return app;   
-            })
+        public static AppBuilder BuildAvaloniaApp()
+            => AppBuilder.Configure<App>()
             .UsePlatformDetect()
 #if DEBUG
             .WithDeveloperTools()

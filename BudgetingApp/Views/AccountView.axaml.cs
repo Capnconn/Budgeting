@@ -1,10 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using BudgetingApp.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace BudgetingApp;
+namespace BudgetingApp.Views;
 
-public partial class AccountView: UserControl
+public partial class AccountView : UserControl
 {
     public AccountView()
     {

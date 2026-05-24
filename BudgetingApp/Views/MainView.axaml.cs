@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using BudgetingApp.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BudgetingApp.Views
 {

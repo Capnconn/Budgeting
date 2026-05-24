@@ -1,8 +1,12 @@
 <Solution>
+  <Project Path="BudgetingApp.Services/BudgetingApp.Services.csproj" Id="51f86dc4-f52c-4678-985a-c171f29f91fd" />
+  <Project Path="BudgetingApp.Adapter/BudgetingApp.Adapter.csproj" Id="a988cd1a-3005-410c-82b9-44fcb4bb36bd" />
   <Project Path="BudgetingApp.Android/BudgetingApp.Android.csproj">
     <Deploy />
   </Project>
   <Project Path="BudgetingApp.Browser/BudgetingApp.Browser.csproj" />
+  <Project Path="BudgetingApp.Common/BudgetingApp.Common.csproj" Id="7b2e7400-3ed4-45ac-88e8-b727109557ee" />
+  <Project Path="BudgetingApp.Data/BudgetingApp.Infrastructure.csproj" Id="2119ae9d-ee5f-4366-b16b-53d239857432" />
   <Project Path="BudgetingApp.Desktop/BudgetingApp.Desktop.csproj" />
   <Project Path="BudgetingApp.iOS/BudgetingApp.iOS.csproj">
     <Deploy />

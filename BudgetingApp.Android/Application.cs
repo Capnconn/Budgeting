@@ -13,23 +13,6 @@ namespace BudgetingApp.Android
         {
         }
 
-        protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
-        {
-            builder.AfterSetup((appBuilder) =>
-            {
-                var host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddBudgetingAppServices();
-                })
-                .Build();
-
-                var instance = appBuilder.Instance as BudgetingApp.App;
-                instance!.Initialize(host.Services);
-            });
-
-            return base.CustomizeAppBuilder(builder)
-            .WithInterFont();
-        }
+        protected override AppBuilder CustomizeAppBuilder(AppBuilder builder) => base.CustomizeAppBuilder(builder).WithInterFont();
     }
 }
