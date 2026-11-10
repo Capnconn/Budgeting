@@ -7,25 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp
+namespace BudgetingApp;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddViewServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddViewServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddServices(configuration);
+        services.AddServices(configuration);
+        services.AddSingleton<MainView>();
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<MainWindow>();
 
-            services.AddSingleton<AccountView>();
-            services.AddSingleton<MainView>();
-            services.AddSingleton<TransactionsView>();
-
-            services.AddSingleton<AccountViewModel>();
-            services.AddSingleton<MainViewModel>();
-            services.AddSingleton<TransactionsViewModel>();
-
-            services.AddSingleton<MainWindow>();
-
-            return services;
-        }
+        return services;
     }
 }

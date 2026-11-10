@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BudgetingApp.Migrations
+namespace BudgetingApp.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -68,19 +68,17 @@ namespace BudgetingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlaidItems",
+                name: "PlaidConnections",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     AccessToken = table.Column<string>(type: "TEXT", nullable: false),
-                    PlaidItemId = table.Column<string>(type: "TEXT", nullable: false),
-                    InstitutionId = table.Column<string>(type: "TEXT", nullable: true),
-                    InstitutionName = table.Column<string>(type: "TEXT", nullable: true),
+                    PlaidConnectionId = table.Column<string>(type: "TEXT", nullable: false),
                     NextCursor = table.Column<string>(type: "TEXT", nullable: true),
                     HasMore = table.Column<bool>(type: "INTEGER", nullable: true),
-                    ItemStatus = table.Column<string>(type: "TEXT", nullable: false),
-                    ErrorCode = table.Column<string>(type: "TEXT", nullable: false),
-                    ConsentExpirationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ConnectionStatus = table.Column<string>(type: "TEXT", nullable: false),
+                    ErrorCode = table.Column<string>(type: "TEXT", nullable: true),
+                    ConsentExpirationTime = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     LastSyncedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -88,9 +86,9 @@ namespace BudgetingApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlaidItems", x => x.Id);
+                    table.PrimaryKey("PK_PlaidConnections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlaidItems_PlaidUsers_PlaidUserId",
+                        name: "FK_PlaidConnections_PlaidUsers_PlaidUserId",
                         column: x => x.PlaidUserId,
                         principalTable: "PlaidUsers",
                         principalColumn: "Id",
@@ -103,25 +101,45 @@ namespace BudgetingApp.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     AccountId = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     CurrentBalance = table.Column<decimal>(type: "TEXT", nullable: true),
-                    BalanceAvailable = table.Column<decimal>(type: "TEXT", nullable: false),
+                    BalanceAvailable = table.Column<decimal>(type: "TEXT", nullable: true),
                     BalanceLimit = table.Column<decimal>(type: "TEXT", nullable: false),
                     IsHidden = table.Column<bool>(type: "INTEGER", nullable: false),
                     LastSyncedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Mask = table.Column<string>(type: "TEXT", nullable: true),
                     Type = table.Column<string>(type: "TEXT", nullable: true),
+                    SubType = table.Column<string>(type: "TEXT", nullable: true),
                     VerificationStatus = table.Column<string>(type: "TEXT", nullable: true),
-                    PlaidItemId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    PlaidConnectionId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlaidAccounts", x => x.Id);
                     table.UniqueConstraint("AK_PlaidAccounts_AccountId", x => x.AccountId);
                     table.ForeignKey(
-                        name: "FK_PlaidAccounts_PlaidItems_PlaidItemId",
-                        column: x => x.PlaidItemId,
-                        principalTable: "PlaidItems",
+                        name: "FK_PlaidAccounts_PlaidConnections_PlaidConnectionId",
+                        column: x => x.PlaidConnectionId,
+                        principalTable: "PlaidConnections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaidInstitutions",
+                columns: table => new
+                {
+                    PlaidConnectionId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    InstitutionId = table.Column<string>(type: "TEXT", nullable: true),
+                    InstitutionName = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaidInstitutions", x => x.PlaidConnectionId);
+                    table.ForeignKey(
+                        name: "FK_PlaidInstitutions_PlaidConnections_PlaidConnectionId",
+                        column: x => x.PlaidConnectionId,
+                        principalTable: "PlaidConnections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -135,9 +153,10 @@ namespace BudgetingApp.Migrations
                     MerchantName = table.Column<string>(type: "TEXT", nullable: true),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: true),
                     AuthorizedDate = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    Category = table.Column<string>(type: "TEXT", nullable: true),
                     Pending = table.Column<bool>(type: "INTEGER", nullable: true),
-                    PlaidAccountId = table.Column<string>(type: "TEXT", nullable: true),
-                    AccountId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    PendingTransactionId = table.Column<string>(type: "TEXT", nullable: true),
+                    PlaidAccountId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,13 +169,13 @@ namespace BudgetingApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlaidAccounts_PlaidItemId",
+                name: "IX_PlaidAccounts_PlaidConnectionId",
                 table: "PlaidAccounts",
-                column: "PlaidItemId");
+                column: "PlaidConnectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlaidItems_PlaidUserId",
-                table: "PlaidItems",
+                name: "IX_PlaidConnections_PlaidUserId",
+                table: "PlaidConnections",
                 column: "PlaidUserId");
 
             migrationBuilder.CreateIndex(
@@ -181,6 +200,9 @@ namespace BudgetingApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "PlaidInstitutions");
+
+            migrationBuilder.DropTable(
                 name: "PlaidTransactions");
 
             migrationBuilder.DropTable(
@@ -190,7 +212,7 @@ namespace BudgetingApp.Migrations
                 name: "PlaidAccounts");
 
             migrationBuilder.DropTable(
-                name: "PlaidItems");
+                name: "PlaidConnections");
 
             migrationBuilder.DropTable(
                 name: "PlaidUsers");

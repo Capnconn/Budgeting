@@ -1,10 +1,9 @@
-﻿namespace BudgetingApp.Enums
+﻿namespace BudgetingApp.Enums;
+
+public enum AppPage
 {
-    public enum AppPage
-    {
-        Dashboard,
-        Account,
-        Budgets,
-        Transactions
-    }
+    Dashboard,
+    Account,
+    Budgets,
+    Transactions
 }

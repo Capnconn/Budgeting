@@ -6,10 +6,11 @@
   </Project>
   <Project Path="BudgetingApp.Browser/BudgetingApp.Browser.csproj" />
   <Project Path="BudgetingApp.Common/BudgetingApp.Common.csproj" Id="7b2e7400-3ed4-45ac-88e8-b727109557ee" />
-  <Project Path="BudgetingApp.Data/BudgetingApp.Infrastructure.csproj" Id="2119ae9d-ee5f-4366-b16b-53d239857432" />
+  <Project Path="BudgetingApp.Data/BudgetingApp.Data.csproj" Id="2119ae9d-ee5f-4366-b16b-53d239857432" />
   <Project Path="BudgetingApp.Desktop/BudgetingApp.Desktop.csproj" />
   <Project Path="BudgetingApp.iOS/BudgetingApp.iOS.csproj">
     <Deploy />
   </Project>
+  <Project Path="BudgetingApp.Server/BudgetingApp.Server.csproj" />
   <Project Path="BudgetingApp/BudgetingApp.csproj" />
 </Solution>

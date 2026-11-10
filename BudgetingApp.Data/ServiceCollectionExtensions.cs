@@ -1,29 +1,34 @@
-﻿using BudgetingApp.Infrastructure.Configuration;
-using BudgetingApp.Infrastructure.Data;
-using BudgetingApp.Infrastructure.Repositories;
+﻿using BudgetingApp.Data.Configuration;
+using BudgetingApp.Data.Data;
+using BudgetingApp.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Infrastructure
+namespace BudgetingApp.Data;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddDataServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        // Configuration
+        var databaseOptions = configuration.GetSection(DatabaseOptions.OptionsName).Get<DatabaseOptions>()!;
+
+        if (!File.Exists(databaseOptions.DatabaseFullName))
         {
-            // Configuration
-            services.AddSingleton(configuration.GetSection(DatabaseOptions.OptionsName).Get<DatabaseOptions>()!);
-
-            // Context
-            services.AddTransient<BudgetContext>();
-
-            // Repositories
-            services.AddTransient<IPlaidUserAccountRepository, PlaidUserAccountRepository>();
-            services.AddTransient<IUserAccountRepository, UserAccountRepository>();
-
-            return services;
+            File.Create(databaseOptions.DatabaseFullName!).Close();
         }
+
+        // Context
+        services.AddPooledDbContextFactory<BudgetContext>(options => options.UseSqlite($"Data Source={databaseOptions.DatabaseFullName}"));
+
+        // Repositories
+        services.AddSingleton<PlaidUserAccountRepository>();
+        services.AddSingleton<UserAccountRepository>();
+
+        return services;
     }
 }

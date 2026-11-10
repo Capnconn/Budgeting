@@ -452,3 +452,11 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Local-only configuration (Plaid keys, machine paths) - never commit
+appsettings.Local.json
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal

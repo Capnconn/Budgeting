@@ -1,16 +1,15 @@
-﻿using BudgetingApp.Services.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BudgetingApp.Data.Data.Enums;
 
-namespace BudgetingApp.Services.Data
+namespace BudgetingApp.Services.Data;
+
+public record Transaction(
+    string? MerchantName,
+    decimal? Amount,
+    string? Category,
+    DateOnly? AuthorizedDate,
+    bool? Pending)
 {
-    public class Transaction
-    {
-        public string? MerchantName { get; set; }
-        public decimal? Amount { get; set; }
-        public TransactionCategory Category { get; set; }
-        public DateOnly? AuthorizedDate { get; set; }
-        public bool? Pending { get; set; }
-    }
 }

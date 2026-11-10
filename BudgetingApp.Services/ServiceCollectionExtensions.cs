@@ -1,24 +1,22 @@
 ﻿using BudgetingApp.Adapter;
-using BudgetingApp.Infrastructure;
+using BudgetingApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Services
+namespace BudgetingApp.Services;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddAdapterServices(configuration);
-            services.AddInfrastructureServices(configuration);
+        services.AddAdapterServices(configuration);
+        services.AddDataServices(configuration);
 
-            services.AddSingleton<IUserSessionService, UserSessionService>();
-            services.AddSingleton<IUserAccountService, UserAccountService>();
+        services.AddSingleton<UserAccountService>();
 
-            return services;
-        }
+        return services;
     }
 }

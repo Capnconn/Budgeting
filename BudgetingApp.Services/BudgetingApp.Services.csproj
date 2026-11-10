@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BudgetingApp.Adapter\BudgetingApp.Adapter.csproj" />
     <ProjectReference Include="..\BudgetingApp.Common\BudgetingApp.Common.csproj" />
-    <ProjectReference Include="..\BudgetingApp.Data\BudgetingApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\BudgetingApp.Data\BudgetingApp.Data.csproj" />
   </ItemGroup>
 
 </Project>

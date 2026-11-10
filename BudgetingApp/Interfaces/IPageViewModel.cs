@@ -1,10 +1,9 @@
 ﻿using BudgetingApp.Enums;
 
-namespace BudgetingApp.Interfaces
+namespace BudgetingApp.Interfaces;
+
+public interface IPageViewModel
 {
-    public interface IPageViewModel
-    {
-        AppPage Page { get; }
-        string DisplayName { get; }
-    }
+    AppPage Page { get; }
+    string DisplayName { get; }
 }

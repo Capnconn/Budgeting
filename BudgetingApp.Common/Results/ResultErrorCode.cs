@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Common.Results
+namespace BudgetingApp.Common.Results;
+
+public enum ResultErrorCode
 {
-    public enum ResultErrorCode
-    {
-        None,
-        NotFound,
-        DuplicateUser,
-        ValidationFailed,
-        Unauthorized,
-        Unknown
-    }
+    None,
+    NotFound,
+    DuplicateUser,
+    ValidationFailed,
+    Unauthorized,
+    Unknown
 }

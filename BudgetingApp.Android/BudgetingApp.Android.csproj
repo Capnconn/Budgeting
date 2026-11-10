@@ -15,6 +15,9 @@
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Include="appsettings.Local.json" Condition="Exists('appsettings.Local.json')">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
   <ItemGroup>
@@ -26,6 +29,9 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.ios" />
+    <PackageReference Include="Xamarin.AndroidX.Core.Core.Ktx" />
     <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" />
   </ItemGroup>
 

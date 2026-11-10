@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Adapter.Data
+namespace BudgetingApp.Adapter.Data;
+
+public class PlaidLinkSession
 {
-    public class PlaidLinkSession
-    {
-        public List<PlaidLinkItemAdd> AddedItems { get; set; } = [];
-    }
+    public List<AddedPlaidLinkConnection> AddedConnections { get; set; } = [];
 }

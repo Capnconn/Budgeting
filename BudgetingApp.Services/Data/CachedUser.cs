@@ -1,6 +1,6 @@
 ﻿namespace BudgetingApp.Services.Data;
 
-public record UserAccount(
+public record CachedUser(
     Guid Id,
     string Username,
     string Name,

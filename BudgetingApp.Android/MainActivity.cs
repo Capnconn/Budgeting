@@ -3,15 +3,14 @@ using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
 
-namespace BudgetingApp.Android
+namespace BudgetingApp.Android;
+
+[Activity(
+    Label = "BudgetingApp.Android",
+    Theme = "@style/MyTheme.NoActionBar",
+    Icon = "@drawable/icon",
+    MainLauncher = true,
+    ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
+public class MainActivity : AvaloniaMainActivity
 {
-    [Activity(
-        Label = "BudgetingApp.Android",
-        Theme = "@style/MyTheme.NoActionBar",
-        Icon = "@drawable/icon",
-        MainLauncher = true,
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
-    public class MainActivity : AvaloniaMainActivity
-    {
-    }
 }

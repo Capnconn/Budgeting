@@ -1,12 +1,11 @@
-using Avalonia.Controls;
+﻿using FluentAvalonia.UI.Windowing;
 
-namespace BudgetingApp.Views
+namespace BudgetingApp.Views;
+
+public partial class MainWindow : FAAppWindow
 {
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

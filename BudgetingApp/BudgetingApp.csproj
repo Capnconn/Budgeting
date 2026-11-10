@@ -5,7 +5,7 @@
     <LangVersion>preview</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
@@ -13,15 +13,19 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Controls.WebView" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="AvaloniaEdit.TextMate" />
+    <PackageReference Include="FluentAvaloniaUI" />
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
     <PackageReference Include="Xaml.Behaviors.Interactions" />
     <PackageReference Include="Xaml.Behaviors.Interactivity" />
   </ItemGroup>
@@ -34,6 +38,14 @@
   <ItemGroup>
     <Compile Update="Views\UserControls\AccountView.axaml.cs">
       <DependentUpon>AccountView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\AccountOverviewPage.axaml.cs">
+      <DependentUpon>AccountOverviewPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\TransactionsPage.axaml.cs">
+      <DependentUpon>TransactionsPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 </Project>

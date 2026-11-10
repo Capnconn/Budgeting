@@ -1,211 +1,27 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:controls="using:FluentAvalonia.UI.Controls"
              xmlns:i="using:Avalonia.Xaml.Interactivity"
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-             xmlns:interfaces="using:BudgetingApp.Interfaces"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:BudgetingApp.ViewModels"
-             xmlns:v="using:BudgetingApp.Views"
-             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
              x:Class="BudgetingApp.Views.MainView"
              x:DataType="vm:MainViewModel">
-
     <i:Interaction.Behaviors>
         <ia:EventTriggerBehavior EventName="AttachedToVisualTree">
             <ia:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </ia:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <UserControl.Styles>
-
-        <!-- Nav item default -->
-        <Style Selector="ListBoxItem">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="0,1"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Border Name="Root"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="8"
-                            Padding="10,9">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter>
-        </Style>
-
-        <Style Selector="ListBoxItem /template/ Border#Root">
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style Selector="ListBoxItem:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="#1A1A30"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected /template/ Border#Root">
-            <Setter Property="Background" Value="#1E1E38"/>
-        </Style>
-
-        <!-- Nav item text default -->
-        <Style Selector="ListBoxItem TextBlock.nav-label">
-            <Setter Property="Foreground" Value="#6A6A8A"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style Selector="ListBoxItem:pointerover TextBlock.nav-label">
-            <Setter Property="Foreground" Value="#A0A0C0"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected TextBlock.nav-label">
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-        </Style>
-
-        <!-- Nav item icon default -->
-        <Style Selector="ListBoxItem Path.nav-icon">
-            <Setter Property="Fill" Value="#6A6A8A"/>
-        </Style>
-        <Style Selector="ListBoxItem:pointerover Path.nav-icon">
-            <Setter Property="Fill" Value="#A0A0C0"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected Path.nav-icon">
-            <Setter Property="Fill" Value="#FFFFFF"/>
-        </Style>
-
-        <!-- Active dot -->
-        <Style Selector="ListBoxItem Ellipse.nav-dot">
-            <Setter Property="IsVisible" Value="False"/>
-        </Style>
-        <Style Selector="ListBoxItem:selected Ellipse.nav-dot">
-            <Setter Property="IsVisible" Value="True"/>
-        </Style>
-
-        <!-- Nav section header -->
-        <Style Selector="TextBlock.nav-section">
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#3A3A5C"/>
-            <Setter Property="LetterSpacing" Value="1"/>
-            <Setter Property="Margin" Value="10,10,0,4"/>
-        </Style>
-
-    </UserControl.Styles>
-
-    <Grid ColumnDefinitions="200,*">
-
-        <!-- ── Navigation sidebar ── -->
-        <Border Grid.Column="0"
-                Background="#131320"
-                VerticalAlignment="Stretch">
-            <DockPanel>
-
-                <!-- Logo -->
-                <Border DockPanel.Dock="Top"
-                        Padding="12,20,12,16"
-                        BorderBrush="#1E1E38"
-                        BorderThickness="0,0,0,0.5"
-                        Margin="0,0,0,8">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Border Width="28" Height="28"
-                                CornerRadius="7"
-                                Background="#5B6AF0">
-                            <TextBlock Text="B"
-                                       FontSize="13"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock Text="BudgetApp"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Bottom actions (sign out / help) -->
-                <StackPanel DockPanel.Dock="Bottom"
-                            Margin="12,0,12,16">
-                    <Border Height="0.5" Background="#1E1E38" Margin="0,0,0,8"/>
-                    <Button Background="Transparent"
-                            BorderThickness="0"
-                            Padding="10,9"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
-                            Cursor="Hand">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <!-- Help icon -->
-                            <Canvas Width="16" Height="16">
-                                <Ellipse Canvas.Left="0" Canvas.Top="0"
-                                         Width="16" Height="16"
-                                         Stroke="#6A6A8A" StrokeThickness="1.5"/>
-                                <TextBlock Canvas.Left="5.5" Canvas.Top="2"
-                                           Text="?" FontSize="10"
-                                           Foreground="#6A6A8A"/>
-                            </Canvas>
-                            <TextBlock Text="Help"
-                                       FontSize="13"
-                                       Foreground="#6A6A8A"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-
-                <!-- Nav items -->
-                <ScrollViewer DockPanel.Dock="Top"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel Margin="12,0">
-
-                        <TextBlock Text="OVERVIEW" Classes="nav-section"/>
-
-                        <ListBox ItemsSource="{Binding Pages}"
-                                 SelectedItem="{Binding CurrentPage}"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Padding="0">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate x:DataType="interfaces:IPageViewModel">
-                                    <Grid ColumnDefinitions="18,10,*,Auto">
-                                        <!-- Icon placeholder — replace Path data per page in a converter or use geometry resources -->
-                                        <Ellipse Grid.Column="0"
-                                                 Width="6" Height="6"
-                                                 Fill="#6A6A8A"
-                                                 VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="2"
-                                                   Text="{Binding DisplayName}"
-                                                   Classes="nav-label"/>
-                                        <Ellipse Grid.Column="3"
-                                                 Classes="nav-dot"
-                                                 Width="6" Height="6"
-                                                 Fill="#5B6AF0"
-                                                 VerticalAlignment="Center"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-
-                    </StackPanel>
-                </ScrollViewer>
-
-            </DockPanel>
-        </Border>
-
-        <!-- ── Page content ── -->
-        <ContentControl Grid.Column="1"
-                        Content="{Binding CurrentPage}"
-                        Background="#F7F7FA"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Stretch">
-    <ContentControl.DataTemplates>
-        <DataTemplate DataType="{x:Type vm:AccountViewModel}">
-            <v:AccountView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:TransactionsViewModel}">
-            <v:TransactionsView />
-        </DataTemplate>
-    </ContentControl.DataTemplates>
-        </ContentControl>
-
+    <Grid RowDefinitions="Auto,*">
+        <controls:FANavigationView AlwaysShowHeader="False"
+                                   WindowDecorationProperties.ElementRole="User"
+                                   PaneDisplayMode="Left"
+                                   Name="NavView"
+                                   IsSettingsVisible="False">
+            <controls:FAFrame Name="FrameView" />
+        </controls:FANavigationView>
     </Grid>
 </UserControl>

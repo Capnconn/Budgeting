@@ -1,44 +1,84 @@
 ﻿using BudgetingApp.Common.Results;
-using BudgetingApp.Infrastructure.Data;
+using BudgetingApp.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Infrastructure.Repositories
-{
-    // TODO: Remove usage of Result.
-    public interface IPlaidUserAccountRepository
-    {
-        Task AddPlaidItemsAsync(List<PlaidItem> plaidItems);
-        Task<PlaidUser?> GetPlaidUserByIdAsync(Guid id);
+namespace BudgetingApp.Data.Repositories;
 
-        Task<Result> UpdatePlaidUserAsync(string id, string linkToken);
+// TODO: Remove usage of Result.
+public class PlaidUserAccountRepository(IDbContextFactory<BudgetContext> contextFactory)
+{
+    public async Task AddPlaidAccountAsync(List<PlaidAccount> plaidAccounts)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        await context.PlaidAccounts.AddRangeAsync(plaidAccounts);
+        await context.SaveChangesAsync();
     }
 
-    public class PlaidUserAccountRepository(BudgetContext context) : IPlaidUserAccountRepository
+    public async Task AddPlaidConnectionAsync(PlaidConnection plaidConnections)
     {
-        public async Task AddPlaidItemsAsync(List<PlaidItem> plaidItems)
+        var context = await contextFactory.CreateDbContextAsync();
+        await context.PlaidConnections.AddAsync(plaidConnections);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task AddPlaidConnectionsAsync(List<PlaidConnection> plaidConnections)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        await context.PlaidConnections.AddRangeAsync(plaidConnections);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task AddPlaidTransactionsAsync(List<PlaidTransaction> plaidTransactions)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        var accountIds = context.PlaidAccounts.Select(x => x.Id).ToHashSet();
+
+        foreach (PlaidTransaction plaidTransaction in plaidTransactions)
         {
-            await context.PlaidItems.AddRangeAsync(plaidItems);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<PlaidUser?> GetPlaidUserByIdAsync(Guid id) => await context.PlaidUsers.FirstOrDefaultAsync(x => x.UserId == id);
-
-        public async Task<Result> UpdatePlaidUserAsync(string id, string linkToken)
-        {
-            var userToUpdate = await context.PlaidUsers.FirstOrDefaultAsync(x => x.Id.ToLower() == id.ToLower());
-
-            if (userToUpdate is null)
+            if (!accountIds.TryGetValue(plaidTransaction.Id, out _))
             {
-                return Result.Failure($"Unable to find plaid user with the id: {id}.");
+                // log something here about there not being a matching account in the database, since this would be weird.
+                continue;
             }
 
-            userToUpdate.LinkToken = linkToken;
-            await context.SaveChangesAsync();
-
-            return Result.Success();
+            await context.PlaidTransactions.AddAsync(plaidTransaction);
         }
+    }
+
+    public async Task<List<PlaidAccount>> GetPlaidAccountsAsync()
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        return await context.PlaidAccounts.Include(x => x.PlaidConnection).AsNoTracking().ToListAsync();
+    }
+
+    public async Task<List<PlaidTransaction>> GetPlaidTransactionsAsync()
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        return await context.PlaidTransactions.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<PlaidUser?> GetPlaidUserByIdAsync(Guid id)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        return await context.PlaidUsers.FirstOrDefaultAsync(x => x.UserId == id);
+    }
+
+    public async Task<Result> UpdatePlaidUserAsync(string id, string linkToken)
+    {
+        var context = await contextFactory.CreateDbContextAsync();
+        var userToUpdate = await context.PlaidUsers.FirstOrDefaultAsync(x => x.Id.ToLower() == id.ToLower());
+
+        if (userToUpdate is null)
+        {
+            return Result.Failure($"Unable to find plaid user with the id: {id}.");
+        }
+
+        userToUpdate.LinkToken = linkToken;
+        await context.SaveChangesAsync();
+
+        return Result.Success();
     }
 }

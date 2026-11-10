@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BudgetingApp.Infrastructure.Configuration
+namespace BudgetingApp.Data.Configuration;
+
+public class DatabaseOptions
 {
-    public class DatabaseOptions
-    {
-        private static readonly string DatabaseName = "BudgetingApp.db";
+    private static readonly string DatabaseName = "BudgetingApp.db";
 
-        public static string OptionsName => "DatabaseOptions";
+    public static string OptionsName => "DatabaseOptions";
 
-        public string? DatabasePath { get; set; } = null;
-        public string DatabaseFullName => Path.Join(DatabasePath, DatabaseName);
-    }
+    public string? DatabasePath { get; init; } = null;
+    public string DatabaseFullName => Path.Join(DatabasePath, DatabaseName);
 }
